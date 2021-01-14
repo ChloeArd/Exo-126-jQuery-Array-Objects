@@ -5,27 +5,64 @@ let arrObj = [
     {"person" : "Spencer", "age" : 34, "avatar" : "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraight&accessoriesType=Prescription02&hairColor=Blonde&facialHairType=BeardMedium&facialHairColor=Black&clotheType=CollarSweater&clotheColor=PastelRed&eyeType=Dizzy&eyebrowType=SadConcerned&mouthType=Sad&skinColor=Yellow"}
 ];
 
-//Methode js native pour parcourir un tableau d'objets ( avec for...in )
-for(let i in arrObj) {
-    // i est l'index de mon tableau d'objet
-    console.log("index = " + i);
+let index = 0;
 
-    // j'accède à mon tableau d'objet comme n'importe quel tableau
-    console.log("arrObj = " + arrObj[i]);
+let objPerson = $("#persons")
+let listPersons = $("#listPersons");
+objPerson.css({
+    "display" : "flex",
+    "justify-content" : "center",
+    "align-items" : "center",
+    "flex-direction" : "column"
+});
 
-    // J'accéde à une propriété particuliére de mon objet ,ici l'age
-    console.log("age = " + arrObj[i].age);
+listPersons.css({
+    "display" : "flex",
+    "justify-content" : "center",
+    "align-items" : "center",
+    "flex-direction" : "column"
+});
+
+function listPerso(){
+    $.each(arrObj, function(index, value) {
+        //Afficher la propriété age pour chaque objet contenu dans mon tableau
+        listPersons.append("<img src =" + value.avatar +" alt='imageAvatar'>");
+        listPersons.append("<p>" + value.person + "<span>(" + value.age + ")</span></p>");
+    });
 }
+// Affiche tous les personnages garce a la boucle
+$("#allPersons").click(function () {
+    listPerso();
+})
 
-//Autre méthode : utilisation de forEach
-arrObj.forEach(function(arr) {
-    //Afficher la propriété age pour chaque objet contenu dans mon tableau
-   console.log("Resultat avec foreach = " + arr.age);
+//Affiche le 1er perso du tableau
+$("#image").attr("src", arrObj[0].avatar);
+$("#name").html(arrObj[0].person);
+$("#age").html("(" + arrObj[0].age + ")");
+
+//Quand on clique sur "<" on, les perso précédent s'affichent
+$("#previous").click(function () {
+    if(index === 0){
+        index = arrObj.length - 1; //car sinon c'est 3
+    }
+    else {
+        index --;
+    }
+    //affichae des perso en fonction de son index
+    $("#image").attr("src", arrObj[index].avatar);
+    $("#name").html(arrObj[index].person);
+    $("#age").html("(" + arrObj[index].age + ")");
 });
 
-//Méthode utilisant jQuery
-$.each(arrObj, function(index, value) {
-    //Afficher la propriété age pour chaque objet contenu dans mon tableau
-   console.log("Affichage age utilisant jQuery = " + value.age);
-});
-
+//pareil sauf que c'est quand on clique sur ">" alors ca affiche les perso suivants
+$("#next").click(function () {
+    if(index === arrObj.length - 1){
+        index = 0
+    }
+    else {
+        index ++;
+    }
+    $("#image").attr("src", arrObj[index].avatar);
+    $("#name").html(arrObj[index].person);
+    $("#age").html("(" + arrObj[index].age + ")");
+})
